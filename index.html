@@ -3,35 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход и регистрация</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Create Your Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #login-page {
+            width: 300px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .btn-group {
+            margin-bottom: 20px;
+        }
+        .btn-group button {
+            margin: 5px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .form-container {
+            text-align: center;
+        }
+        .form-container form {
+            display: none;
+            margin-top: 20px;
+        }
+        .form-container.active form {
+            display: block;
+        }
+        .form-container form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-container form input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .form-container form button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div id="login-page">
-        <h1>Добро пожаловать!</h1>
-        <div id="login-form">
-            <h2>Вход</h2>
-            <form id="login-form">
-                <label for="login-email">Email:</label>
-                <input type="email" id="login-email" name="login-email" required>
-                <label for="login-password">Пароль:</label>
-                <input type="password" id="login-password" name="login-password" required>
-                <button type="submit">Войти</button>
+        <h1>Create Your Image</h1>
+        <div class="btn-group">
+            <button id="signin-btn">Sign In</button>
+            <button id="signup-btn">Sign Up</button>
+        </div>
+        <div id="signin-form" class="form-container">
+            <form>
+                <label for="signin-email">Email:</label>
+                <input type="email" id="signin-email" name="signin-email" required><br>
+                <label for="signin-password">Password:</label>
+                <input type="password" id="signin-password" name="signin-password" required><br>
+                <button type="submit">Login</button>
             </form>
         </div>
-        <div id="signup-form">
-            <h2>Регистрация</h2>
-            <form id="signup-form">
-                <label for="signup-name">Имя:</label>
-                <input type="text" id="signup-name" name="signup-name" required>
+        <div id="signup-form" class="form-container">
+            <form>
+                <label for="signup-name">Full Name:</label>
+                <input type="text" id="signup-name" name="signup-name" required><br>
                 <label for="signup-email">Email:</label>
-                <input type="email" id="signup-email" name="signup-email" required>
-                <label for="signup-password">Пароль:</label>
-                <input type="password" id="signup-password" name="signup-password" required>
-                <button type="submit">Зарегистрироваться</button>
+                <input type="email" id="signup-email" name="signup-email" required><br>
+                <label for="signup-password">Password:</label>
+                <input type="password" id="signup-password" name="signup-password" required><br>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+
+        <!-- Добавленная часть кода для строки ввода запроса картинки -->
+        <div id="image-input-section" class="form-container">
+            <form>
+                <label for="image-description">Image Description:</label>
+                <input type="text" id="image-description" name="image-description" required><br>
+                <button type="submit">Generate Image</button>
             </form>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const signinBtn = document.getElementById('signin-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        const imageInputSection = document.getElementById('image-input-section');
+
+        function showSigninForm() {
+            signinForm.classList.add('active');
+            signupForm.classList.remove('active');
+            imageInputSection.classList.remove('active');
+        }
+
+        function showSignupForm() {
+            signinForm.classList.remove('active');
+            signupForm.classList.add('active');
+            imageInputSection.classList.remove('active');
+        }
+
+        signinBtn.addEventListener('click', showSigninForm);
+        signupBtn.addEventListener('click', showSignupForm);
+
+        // Обработчик события для отправки данных формы регистрации
+        signupForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+            const fullName = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            // Сохраняем данные формы регистрации в локальном хранилище
+            localStorage.setItem('fullName', fullName);
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);
+        });
+
+        // Обработчик события для отправки данных формы входа
+        signinForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+
+            // Получаем данные пользователя из локального хранилища
+            const storedEmail = localStorage.getItem('email');
+            const storedPassword = localStorage.getItem('password');
+
+            // Проверяем совпадение введенных данных с сохраненными
+            if (email === storedEmail && password === storedPassword) {
+                // В случае успешного входа
+                console.log('Login successful');
+                showImageInputSection();
+            } else {
+                // В случае неверных данных
+                console.log('Invalid email or password');
+            }
+        });
+
+        function showImageInputSection() {
+            // Показываем форму для ввода запроса картинки
+            signinForm.classList.remove('active');
+            signupForm.classList.remove('active');
+            imageInputSection.classList.add('active');
+        }
+
+        // Вызываем функцию для отображения формы входа при загрузке страницы
+        showSigninForm();
+    </script>
+</body>
+</html>
+
+
+
+<!-- Добавляем секцию для ввода описания картинки -->
+<div id="image-input-section" class="form-container">
+    <form>
+        <label for="image-description">Image Description:</label>
+        <input type="text" id="image-description" name="image-description" required><br>
+        <button type="submit">Generate Image</button>
+    </form>
+    <div id="generated-image"></div>
+</div>
+
+<!-- Добавляем секцию для ввода описания картинки -->
+<div id="image-input-section" class="form-container">
+    <form>
+        <label for="image-description">Image Description:</label>
+        <input type="text" id="image-description" name="image-description" required><br>
+        <button type="submit">Generate Image</button>
+    </form>
+    <div id="generated-image"></div>
+</div>
+
+<script>
+    const apiKey = '6ddc0e66-4502-41dc-a72f-4739dbb69edf:d3891abb112ebd6f8a63f9aaa9730c5e'; // Замените 'YOUR_API_KEY' на ваш ключ API
+
+    const generateImage = async (description) => {
+        try {
+            const response = await fetch('https://fal.run/fal-ai/fooocus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({ input: { description } })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to generate image');
+            }
+
+            const data = await response.json();
+            const imageUrl = data.output.image_url;
+            console.log('Generated Image URL:', imageUrl);
+            // Показываем сгенерированное изображение на странице
+            document.getElementById('generated-image').innerHTML = `<img src="${imageUrl}" alt="Generated Image">`;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    // Обработчик события для отправки запроса на генерацию картинки при отправке формы
+    document.getElementById('image-input-section').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+        const description = document.getElementById('image-description').value;
+
+        // Вызываем функцию для генерации изображения с полученным описанием
+        generateImage(description);
+    });
+</script>
 </body>
 </html>

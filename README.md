@@ -1,4 +1,4 @@
-## mobile-programming-project
+## Mobile programming project. Fal-ai: Fooocus
 
 Project Report: AI-Powered Image Generation Web Application
 

@@ -1,2 +1,2 @@
 ## Instructions
-First, you creating a profile by signing up. The program remembers your data and after your login, it compares the data that you put while signing up with your login data. If it is correct then you are transferring to the new page with the generating string, and generate the image.
+First, you creating a profile by signing up. The program remembers your data and after your login, it compares the data that you put while signing up with your login data. If it is correct then you are transferring to the new page with the generating string, and generate the image. 
